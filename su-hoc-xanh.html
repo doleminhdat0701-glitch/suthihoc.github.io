@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#123c87">
+  <title>Sử Học Xanh — Việt Nam & Thế giới</title>
+
+<style>
+    :root {
+      --blue: #1d4ed8;
+      --navy: #102c60;
+      --sky: #eaf3ff;
+      --background: #f5f8fe;
+      --text: #172b49;
+      --muted: #566781;
+      --border: #d9e5f5;
+      --white: #fff;
+      --surface:#fff; --hero-a:#102c60; --hero-b:#1654ad; --glow:#3b82f655;
+      --hero-ink:#dceaff; --eyebrow:#bfdbfe; --notice:#edf5ff; --badge-ink:#174ca4;
+      --status-bg:#102c60; --hero-btn-bg:#fff; --hero-btn-ink:#102c60;
+    }
+    [data-theme="red"] {
+      --blue:#c8102e; --navy:#5c0a16; --sky:#ffecee; --background:#fff7f7; --text:#2b1416;
+      --muted:#7a5459; --border:#f0d3d6; --hero-a:#4a0710; --hero-b:#b3122b; --glow:#ff5d6e55;
+      --hero-ink:#ffe1e4; --eyebrow:#ffc2c9; --notice:#fff0f1; --badge-ink:#a30d24;
+      --status-bg:#5c0a16; --hero-btn-ink:#5c0a16;
+    }
+    [data-theme="red"] .btn.danger { background:#1a1a1a; color:#fff; }
+    [data-theme="black"] {
+      color-scheme: dark;
+      --blue:#ee2e3d; --navy:#f5f5f5; --sky:#2a1215; --background:#0c0c0d; --text:#ededed;
+      --muted:#a3a3a8; --border:#2c2c30; --surface:#161618; --hero-a:#000; --hero-b:#2a0a0e;
+      --glow:#e11d2e44; --hero-ink:#d4d4d8; --eyebrow:#ff6b78; --notice:#1c1214;
+      --badge-ink:#ff8a94; --status-bg:#c8102e; --hero-btn-bg:#ee2e3d; --hero-btn-ink:#fff;
+    }
+    [data-theme="black"] .btn.danger { background:#3a1216; color:#ff8a94; }
+    .themes { display:flex; gap:8px; align-items:center; }
+    .swatch { width:26px; height:26px; border-radius:50%; border:2px solid var(--border); padding:0; }
+    .swatch[aria-pressed="true"] { outline:3px solid var(--blue); outline-offset:2px; }
+
+* { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    button, input, select, textarea { font: inherit; }
+    button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+    a { color: var(--blue); }
+    button { cursor: pointer; }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
+
+.wrap { width: min(1120px, 92%); margin: auto; }
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 18px 0;
+    }
+    .brand {
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 1.25rem;
+      font-weight: 850;
+      letter-spacing: -.5px;
+    }
+    nav { display: flex; align-items: center; flex-wrap: wrap; gap: 20px; }
+    nav a { text-decoration: none; color: var(--muted); font-weight: 600; }
+
+.btn {
+      border: 0;
+      border-radius: 11px;
+      padding: 10px 16px;
+      background: var(--blue);
+      color: white;
+      font-weight: 650;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn:hover { filter: brightness(.94); }
+    .btn.light { background: var(--sky); color: var(--blue); }
+    .btn.danger { background: #fff0f1; color: #ac1730; }
+    .btn.small { padding: 7px 11px; font-size: .88rem; }
+
+.hero {
+      background:
+        radial-gradient(circle at 90% 20%, var(--glow), transparent 38%),
+        linear-gradient(115deg, var(--hero-a), var(--hero-b));
+      color: white;
+      padding: 70px 0;
+    }
+    .eyebrow {
+      margin: 0 0 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--eyebrow);
+    }
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 3.7rem);
+      line-height: 1.12;
+      letter-spacing: -1.7px;
+      max-width: 800px;
+      margin: 0 0 20px;
+    }
+    .hero p:not(.eyebrow) { max-width: 660px; color: var(--hero-ink); }
+    .hero .btn { margin-top: 12px; background: var(--hero-btn-bg); color: var(--hero-btn-ink); }
+
+main { padding: 30px 0 50px; }
+    section { margin-bottom: 38px; scroll-margin-top: 20px; }
+    h2 { color: var(--navy); letter-spacing: -.5px; margin-bottom: 6px; }
+    .muted { color: var(--muted); }
+    .notice {
+      padding: 16px 20px;
+      background: var(--notice);
+      border-left: 4px solid var(--blue);
+      border-radius: 10px;
+    }
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr 230px;
+      gap: 12px;
+      margin: 22px 0;
+    }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 12px;
+      background: var(--surface);
+      color: var(--text);
+    }
+    textarea { resize: vertical; min-height: 115px; }
+    label { display: block; font-weight: 650; font-size: .92rem; }
+    label input, label select, label textarea { margin-top: 6px; }
+
+.section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 23px;
+      box-shadow: 0 7px 22px #102c6005;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .badge {
+      background: var(--sky);
+      color: var(--badge-ink);
+      border-radius: 8px;
+      padding: 4px 9px;
+      font-size: .76rem;
+      font-weight: 700;
+    }
+    .card h3 { line-height: 1.4; margin: 15px 0 7px; color: var(--navy); }
+    .card p { color: var(--muted); font-size: .95rem; white-space: pre-line; }
+    .card > a { margin-top: auto; font-weight: 650; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+
+.panel {
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .full { grid-column: 1 / -1; }
+    .table-wrap {
+      overflow-x: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-top: 18px;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 660px; }
+    th, td { text-align: left; padding: 17px; border-bottom: 1px solid var(--border); }
+    th { background: var(--sky); color: var(--navy); font-size: .9rem; }
+    td { vertical-align: top; font-size: .92rem; }
+    td:first-child { min-width: 190px; }
+    td a { font-weight: 700; }
+    td .actions { margin-top: 0; }
+    tbody tr:last-child td { border-bottom: 0; }
+    .empty { color: var(--muted); padding: 20px 0; }
+
+#status {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: 92vw;
+      padding: 12px 20px;
+      background: var(--status-bg);
+      color: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px #0002;
+      z-index: 10;
+    }
+    footer {
+      padding: 26px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+@media (max-width: 850px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 45px 0; }
+      .grid, .toolbar, .form-grid { grid-template-columns: 1fr; }
+      .full { grid-column: auto; }
+      nav { gap: 12px; font-size: .88rem; }
+      .panel { padding: 18px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap topbar">
+      <a class="brand" href="#">SỬ HỌC XANH</a>
+      <nav aria-label="Điều hướng chính">
+        <a href="#lessons">Bài học</a>
+        <a href="#library">Thư viện nguồn</a>
+        <span class="themes" role="group" aria-label="Chọn màu giao diện">
+          <button class="swatch" type="button" data-theme-btn="blue" aria-label="Màu xanh dương" style="background:#1d4ed8"></button>
+          <button class="swatch" type="button" data-theme-btn="red" aria-label="Màu đỏ" style="background:#c8102e"></button>
+          <button class="swatch" type="button" data-theme-btn="black" aria-label="Màu đen" style="background:#0c0c0d"></button>
+        </span>
+        <button id="manageButton" class="btn light" type="button"
+                aria-expanded="false" aria-controls="manager">
+          Quản lý cục bộ
+        </button>
+      </nav>
+    </div>
+  </header>
+
+<div class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Hiểu quá khứ · Mở rộng góc nhìn</p>
+      <h1>Mỗi thời đại,<br>một câu chuyện đáng học.</h1>
+      <p>
+        Không gian tự học lịch sử Việt Nam và thế giới:
+        ghi chép kiến thức, đặt câu hỏi và khám phá tư liệu từ nhiều nguồn.
+      </p>
+      <a class="btn" href="#lessons">Khám phá bài học →</a>
+    </div>
+  </div>
+
+<main class="wrap">
+    <p class="notice">
+      <strong>Góc học tập cá nhân:</strong>
+      nội dung bạn thêm được lưu trong trình duyệt này.
+      Hãy xuất bản sao lưu thường xuyên. Chế độ quản lý không phải đăng nhập bảo mật.
+    </p>
+
+<section id="manager" class="panel" hidden>
+      <h2>Quản lý nội dung</h2>
+      <p class="muted">
+        Thêm, sửa hoặc xóa bài học và nguồn tham khảo.
+        Thay đổi không tự đồng bộ sang thiết bị khác.
+      </p>
+
+<div class="actions">
+        <button class="btn light" id="exportButton" type="button">Xuất bản sao lưu</button>
+        <button class="btn light" id="importButton" type="button">Nhập bản sao lưu</button>
+        <input id="importFile" type="file" accept=".json,application/json" hidden>
+      </div>
+
+<form id="editor">
+        <div class="form-grid">
+          <label>
+            Loại nội dung
+            <select id="kind">
+              <option value="lesson">Bài học / ghi chép</option>
+              <option value="source">Nguồn tham khảo</option>
+            </select>
+          </label>
+
+<label>
+            Chủ đề
+            <select id="topic">
+              <option value="vn">Lịch sử Việt Nam</option>
+              <option value="world">Lịch sử thế giới</option>
+              <option value="both">Liên chủ đề</option>
+            </select>
+          </label>
+
+<label class="full">
+            Tiêu đề
+            <input id="title" maxlength="180" required
+                   placeholder="Ví dụ: Việt Nam giai đoạn 1945–1954">
+          </label>
+
+<label class="full">
+            Nội dung ghi chép / mô tả nguồn
+            <textarea id="text" maxlength="12000" required
+                      placeholder="Ghi sự kiện, bối cảnh, nguyên nhân, kết quả và câu hỏi cần tìm hiểu..."></textarea>
+          </label>
+
+<label class="full">
+            Đường dẫn tham khảo
+            <input id="url" type="url" maxlength="2000"
+                   placeholder="https://...">
+          </label>
+        </div>
+
+<div class="actions">
+          <button id="saveButton" class="btn" type="submit">Thêm nội dung</button>
+          <button id="cancelButton" class="btn light" type="button">Làm mới biểu mẫu</button>
+        </div>
+      </form>
+    </section>
+
+<div class="toolbar" role="search" aria-label="Tìm nội dung học tập">
+      <input id="search" type="search"
+             aria-label="Từ khóa tìm kiếm"
+             placeholder="Tìm sự kiện, bài học, bảo tàng, tư liệu...">
+      <select id="filter" aria-label="Lọc chủ đề">
+        <option value="all">Tất cả chủ đề</option>
+        <option value="vn">Lịch sử Việt Nam</option>
+        <option value="world">Lịch sử thế giới</option>
+        <option value="both">Liên chủ đề</option>
+      </select>
+    </div>
+
+<section id="lessons">
+      <div class="section-title">
+        <h2>Bài học & ghi chép</h2>
+        <span id="lessonCount" class="muted"></span>
+      </div>
+      <p class="muted">
+        Các bài mẫu là tóm tắt nhập môn; đường dẫn đi kèm là điểm bắt đầu
+        tra cứu, không phải trích dẫn chứng minh từng câu.
+      </p>
+      <div id="lessonGrid" class="grid"></div>
+    </section>
+
+<section id="library">
+      <div class="section-title">
+        <h2>Thư viện nguồn tham khảo</h2>
+        <span id="sourceCount" class="muted"></span>
+      </div>
+      <p class="muted">
+        Ưu tiên đọc tư liệu gốc cùng nghiên cứu học thuật.
+        Các liên kết mở ở tab mới; một số nội dung có thể cần tài khoản hoặc trả phí.
+      </p>
+
+<div class="table-wrap">
+        <table>
+          <caption class="muted">
+            Nguồn khởi đầu để tra cứu — chưa kiểm tra trực tiếp tình trạng liên kết
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Nguồn</th>
+              <th scope="col">Chủ đề</th>
+              <th scope="col">Nên dùng để làm gì?</th>
+              <th scope="col" id="actionHeading" hidden>Quản lý</th>
+            </tr>
+          </thead>
+          <tbody id="sourceRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+<section class="panel">
+      <h2>Học lịch sử bằng cách đối chiếu</h2>
+      <p>
+        Với mỗi sự kiện, hãy ghi rõ <strong>thời gian, địa điểm, bối cảnh,
+        nhân vật, nguyên nhân, diễn biến và hệ quả</strong>.
+        Phân biệt sự kiện được ghi nhận với cách diễn giải của tác giả.
+      </p>
+      <p class="muted">
+        Khi lưu tư liệu, ghi thêm tên tác giả hoặc tổ chức, tên tài liệu,
+        năm xuất bản, số trang nếu có, URL và ngày bạn truy cập.
+        Không sao chép nguyên văn bài viết hoặc hình ảnh nếu chưa kiểm tra quyền sử dụng.
+      </p>
+    </section>
+  </main>
+
+<footer>
+    <div class="wrap">
+      Sử Học Xanh · Không gian tự học lịch sử của bạn.<br>
+      Bản HTML cá nhân — không có máy chủ, không có tài khoản đăng nhập.
+    </div>
+  </footer>
+
+<div id="status" role="status" aria-live="polite" hidden></div>
+
+<script>
+    "use strict";
+
+const STORAGE_KEY = "su-hoc-xanh-v1";
+    const $ = id => document.getElementById(id);
+    const topicNames = {
+      vn: "Lịch sử Việt Nam",
+      world: "Lịch sử thế giới",
+      both: "Liên chủ đề"
+    };
+
+// Bạn có thể thay nội dung mặc định ở đây trước khi đưa website lên mạng.
+    const starter = [
+      {
+        kind: "lesson", topic: "vn",
+        title: "1945 — Sự ra đời của nước Việt Nam Dân chủ Cộng hòa",
+        text: "Ngày 2/9/1945, tại Quảng trường Ba Đình, Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập, tuyên bố thành lập nước Việt Nam Dân chủ Cộng hòa.\n\nGợi ý học: tìm hiểu bối cảnh Cách mạng tháng Tám và những khó khăn của chính quyền mới.",
+        url: "https://baotanglichsu.vn/"
+      },
+      {
+        kind: "lesson", topic: "vn",
+        title: "1986 — Công cuộc Đổi mới",
+        text: "Đại hội VI của Đảng Cộng sản Việt Nam, tháng 12/1986, đánh dấu việc đề ra đường lối Đổi mới toàn diện.\n\nGợi ý học: đối chiếu bối cảnh kinh tế trước Đổi mới với các thay đổi trong những thập niên tiếp theo; ghi nguồn cho từng số liệu.",
+        url: "https://vjol.info.vn/"
+      },
+      {
+        kind: "lesson", topic: "world",
+        title: "1914–1918 — Chiến tranh thế giới thứ nhất",
+        text: "Chiến tranh thế giới thứ nhất diễn ra từ năm 1914 đến năm 1918. Cần phân biệt sự kiện châm ngòi tại Sarajevo với các nguyên nhân sâu xa về liên minh, cạnh tranh đế quốc và chủ nghĩa dân tộc.\n\nGợi ý học: lập bảng nguyên nhân, các mặt trận và hệ quả của chiến tranh.",
+        url: "https://www.iwm.org.uk/history"
+      },
+      {
+        kind: "lesson", topic: "world",
+        title: "Cách mạng công nghiệp — Từ Anh ra thế giới",
+        text: "Cách mạng công nghiệp khởi đầu ở Anh vào nửa sau thế kỷ XVIII, với những chuyển biến trong sản xuất, năng lượng và tổ chức lao động.\n\nGợi ý học: tìm hiểu ngành dệt, máy hơi nước, đô thị hóa và điều kiện sống của công nhân; quá trình công nghiệp hóa không diễn ra đồng đều giữa các quốc gia.",
+        url: "https://www.britannica.com/"
+      },
+      {
+        kind: "source", topic: "vn",
+        title: "Bảo tàng Lịch sử Quốc gia",
+        text: "Tiếng Việt và một số nội dung tiếng Anh. Tra cứu bài giới thiệu hiện vật, khảo cổ, trưng bày và lịch sử Việt Nam.",
+        url: "https://baotanglichsu.vn/"
+      },
+      {
+        kind: "source", topic: "vn",
+        title: "Thư viện Quốc gia Việt Nam",
+        text: "Tìm danh mục sách, thông tin thư viện và các bộ sưu tập số. Không phải mọi tài liệu đều có toàn văn truy cập tự do.",
+        url: "https://nlv.gov.vn/"
+      },
+      {
+        kind: "source", topic: "both",
+        title: "VJOL — Vietnam Journals Online",
+        text: "Cổng tạp chí khoa học Việt Nam. Tìm bài nghiên cứu lịch sử và khoa học xã hội; kiểm tra tác giả, tạp chí, năm xuất bản và tài liệu dẫn.",
+        url: "https://vjol.info.vn/"
+      },
+      {
+        kind: "source", topic: "vn",
+        title: "UNESCO — Di sản thế giới tại Việt Nam",
+        text: "Chủ yếu tiếng Anh. Tra cứu hồ sơ di sản, giá trị nổi bật toàn cầu và tài liệu liên quan đến các di sản Việt Nam.",
+        url: "https://whc.unesco.org/en/statesparties/vn"
+      },
+      {
+        kind: "source", topic: "world",
+        title: "World History Encyclopedia",
+        text: "Bài tổng quan, bản đồ và nội dung về nhiều nền văn minh. Hữu ích để nhập môn; nên đối chiếu với nghiên cứu chuyên ngành.",
+        url: "https://www.worldhistory.org/"
+      },
+      {
+        kind: "source", topic: "world",
+        title: "Encyclopaedia Britannica",
+        text: "Tiếng Anh. Tra cứu khái niệm, nhân vật và sự kiện lịch sử. Một số nội dung hoặc tính năng có thể yêu cầu thuê bao.",
+        url: "https://www.britannica.com/"
+      },
+      {
+        kind: "source", topic: "world",
+        title: "Library of Congress — Digital Collections",
+        text: "Tiếng Anh. Bộ sưu tập bản đồ, ảnh, báo chí và tư liệu số. Kiểm tra mục quyền sử dụng của từng hiện vật trước khi đăng lại.",
+        url: "https://www.loc.gov/collections/"
+      },
+      {
+        kind: "source", topic: "world",
+        title: "U.S. National Archives — Research",
+        text: "Tiếng Anh. Tư liệu lưu trữ Hoa Kỳ và hướng dẫn nghiên cứu. Chú ý bối cảnh tạo lập tài liệu và góc nhìn của cơ quan phát hành.",
+        url: "https://www.archives.gov/research"
+      },
+      {
+        kind: "source", topic: "world",
+        title: "British Museum",
+        text: "Tiếng Anh. Khám phá hiện vật và các nền văn minh. Khi học về hiện vật, nên tìm thêm nguồn về xuất xứ và lịch sử sưu tầm.",
+        url: "https://www.britishmuseum.org/"
+      },
+      {
+        kind: "source", topic: "world",
+        title: "Imperial War Museums — History",
+        text: "Tiếng Anh. Bài viết, hiện vật và câu chuyện về chiến tranh hiện đại, đặc biệt hai cuộc thế chiến; nên đối chiếu nhiều góc nhìn.",
+        url: "https://www.iwm.org.uk/history"
+      }
+    ];
+// Nội dung bổ sung (phiên bản 2)
+    const starterV2 = [
+      { kind:"lesson", topic:"vn", title:"938 — Ngô Quyền và chiến thắng Bạch Đằng",
+        text:"Năm 938, Ngô Quyền đánh bại quân Nam Hán trên sông Bạch Đằng bằng cách cho cắm cọc dưới lòng sông và lợi dụng thủy triều. Chiến thắng này chấm dứt hơn một nghìn năm Bắc thuộc; năm 939 Ngô Quyền xưng vương.\n\nGợi ý học: vẽ sơ đồ trận đánh và so sánh với trận Bạch Đằng năm 1288.",
+        url:"https://baotanglichsu.vn/" },
+      { kind:"lesson", topic:"vn", title:"Thế kỷ XIII — Ba lần kháng chiến chống Mông – Nguyên",
+        text:"Nhà Trần đã ba lần đánh thắng quân Mông – Nguyên (1258, 1285, 1287–1288). Hội nghị Diên Hồng năm 1284 và vai trò của Trần Hưng Đạo thường được nhắc đến khi học giai đoạn này.\n\nGợi ý học: lập bảng so sánh ba cuộc kháng chiến về lực lượng, chiến thuật và kết quả.",
+        url:"https://vjol.info.vn/" },
+      { kind:"lesson", topic:"vn", title:"1418–1428 — Khởi nghĩa Lam Sơn",
+        text:"Lê Lợi dựng cờ khởi nghĩa ở Lam Sơn năm 1418 chống ách đô hộ nhà Minh. Sau nhiều năm chiến đấu, cuộc khởi nghĩa thắng lợi; năm 1428 Nguyễn Trãi soạn Bình Ngô đại cáo và Lê Lợi lên ngôi, mở đầu triều Hậu Lê.\n\nGợi ý học: tìm hiểu vai trò của Nguyễn Trãi và tư tưởng nhân nghĩa trong văn bản.",
+        url:"https://nlv.gov.vn/" },
+      { kind:"lesson", topic:"vn", title:"1954 — Chiến dịch Điện Biên Phủ và Hiệp định Giơ-ne-vơ",
+        text:"Chiến dịch Điện Biên Phủ diễn ra từ ngày 13/3 đến 7/5/1954. Ngày 21/7/1954, Hiệp định Giơ-ne-vơ về Đông Dương được ký, chấm dứt chiến tranh của Pháp ở Đông Dương và tạm thời chia Việt Nam ở vĩ tuyến 17.\n\nGợi ý học: đối chiếu diễn biến quân sự với bối cảnh ngoại giao quốc tế.",
+        url:"https://baotanglichsu.vn/" },
+      { kind:"lesson", topic:"vn", title:"1975 — Thống nhất đất nước",
+        text:"Chiến dịch Hồ Chí Minh kết thúc ngày 30/4/1975 với việc giải phóng Sài Gòn. Năm 1976, nước Cộng hòa Xã hội Chủ nghĩa Việt Nam được thành lập trên phạm vi cả nước.\n\nGợi ý học: tìm hiểu bối cảnh sau Hiệp định Pa-ri 1973 và những thách thức sau thống nhất.",
+        url:"https://nlv.gov.vn/" },
+      { kind:"lesson", topic:"world", title:"1789 — Cách mạng Pháp",
+        text:"Ngày 14/7/1789, người dân Paris tấn công nhà tù Bastille, biểu tượng của chế độ cũ. Tháng 8/1789, Tuyên ngôn Nhân quyền và Dân quyền được thông qua, đề cao quyền tự do và bình đẳng trước pháp luật.\n\nGợi ý học: phân biệt các giai đoạn của cách mạng và ảnh hưởng của nó tới châu Âu.",
+        url:"https://www.britannica.com/" },
+      { kind:"lesson", topic:"world", title:"1939–1945 — Chiến tranh thế giới thứ hai",
+        text:"Chiến tranh bùng nổ ngày 1/9/1939 khi Đức tấn công Ba Lan. Ở châu Âu chiến tranh kết thúc vào tháng 5/1945, còn ở châu Á – Thái Bình Dương kết thúc khi Nhật Bản đầu hàng, văn kiện được ký ngày 2/9/1945.\n\nGợi ý học: lập sơ đồ các mặt trận chính và ghi rõ nguồn cho mọi số liệu thương vong.",
+        url:"https://www.iwm.org.uk/history" },
+      { kind:"lesson", topic:"world", title:"1947–1991 — Chiến tranh Lạnh",
+        text:"Chiến tranh Lạnh là thời kỳ đối đầu chính trị, quân sự và tư tưởng giữa hai khối do Hoa Kỳ và Liên Xô đứng đầu, không dẫn tới xung đột trực tiếp giữa hai cường quốc. Liên Xô tan rã năm 1991.\n\nGợi ý học: tìm hiểu tác động của Chiến tranh Lạnh tới Việt Nam và các khu vực khác.",
+        url:"https://www.archives.gov/research" },
+      { kind:"lesson", topic:"both", title:"Việt Nam trong dòng chảy lịch sử thế giới",
+        text:"Nhiều sự kiện ở Việt Nam chỉ được hiểu đầy đủ khi đặt trong bối cảnh quốc tế: chiến tranh chống Mông – Nguyên gắn với đế quốc Mông Cổ, năm 1954 gắn với trật tự sau Thế chiến II, năm 1975 gắn với Chiến tranh Lạnh.\n\nGợi ý học: chọn một mốc và viết hai đoạn, một về bối cảnh trong nước, một về bối cảnh quốc tế.",
+        url:"https://www.worldhistory.org/" },
+      { kind:"source", topic:"both", title:"Wikipedia tiếng Việt — Lịch sử",
+        text:"Tiếng Việt. Dùng để nắm tổng quan và tìm từ khóa; nên kiểm tra phần tài liệu tham khảo cuối bài và đối chiếu với nguồn học thuật.",
+        url:"https://vi.wikipedia.org/" },
+      { kind:"source", topic:"world", title:"Khan Academy — Lịch sử thế giới",
+        text:"Tiếng Anh. Bài giảng và bài tập theo từng giai đoạn, phù hợp để tự học có hệ thống.",
+        url:"https://www.khanacademy.org/humanities/world-history" },
+      { kind:"source", topic:"world", title:"Smithsonian Institution",
+        text:"Tiếng Anh. Bộ sưu tập hiện vật, bài viết và tư liệu số về lịch sử, khoa học và văn hóa; kiểm tra điều khoản sử dụng trước khi đăng lại hình ảnh.",
+        url:"https://www.si.edu/" }
+    ];
+
+
+let records = [];
+    let managing = false;
+    let editingId = null;
+    let messageTimer;
+
+function notify(message) {
+      clearTimeout(messageTimer);
+      $("status").textContent = message;
+      $("status").hidden = false;
+      messageTimer = setTimeout(() => $("status").hidden = true, 6500);
+    }
+
+function newId() {
+      return globalThis.crypto?.randomUUID?.()
+        ?? Date.now().toString(36) + Math.random().toString(36).slice(2);
+    }
+
+function safeUrl(value) {
+      if (!value) return "";
+      const parsed = new URL(value);
+      if (!["https:", "http:"].includes(parsed.protocol)
+          || parsed.username || parsed.password) {
+        throw new Error("Đường dẫn phải dùng HTTP hoặc HTTPS, không kèm tài khoản.");
+      }
+      return parsed.href;
+    }
+
+function normalize(item) {
+      if (!item || typeof item !== "object"
+          || !["lesson", "source"].includes(item.kind)
+          || !Object.hasOwn(topicNames, item.topic)
+          || typeof item.title !== "string"
+          || typeof item.text !== "string"
+          || typeof item.url !== "string") {
+        throw new Error("Dữ liệu nội dung không đúng định dạng.");
+      }
+
+const title = item.title.trim();
+      const text = item.text.trim();
+      const url = item.url.trim();
+
+if (!title || !text || title.length > 180
+          || text.length > 12000 || url.length > 2000) {
+        throw new Error("Tiêu đề, nội dung hoặc đường dẫn không hợp lệ.");
+      }
+      if (item.kind === "source" && !url) {
+        throw new Error("Nguồn tham khảo cần có đường dẫn.");
+      }
+
+return {
+        id: newId(),
+        kind: item.kind,
+        topic: item.topic,
+        title,
+        text,
+        url: safeUrl(url)
+      };
+    }
+
+function validateArray(data) {
+      if (!Array.isArray(data) || data.length > 500) {
+        throw new Error("Bản sao lưu phải là mảng, tối đa 500 nội dung.");
+      }
+      return data.map(normalize);
+    }
+
+function load() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        records = saved === null
+          ? [...starter, ...starterV2].map(normalize)
+          : validateArray(JSON.parse(saved));
+      } catch {
+        records = starter.map(normalize);
+        notify("Không đọc được dữ liệu đã lưu. Đang hiển thị nội dung mẫu; chưa ghi đè dữ liệu cũ.");
+      }
+    }
+
+function commit(nextRecords) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(nextRecords));
+        records = nextRecords;
+        render();
+        return true;
+      } catch {
+        notify("Không lưu được. Hãy kiểm tra quyền lưu trữ hoặc dung lượng trình duyệt.");
+        return false;
+      }
+    }
+
+function element(tag, text, className) {
+      const node = document.createElement(tag);
+      if (text !== undefined) node.textContent = text;
+      if (className) node.className = className;
+      return node;
+    }
+
+function externalLink(text, url) {
+      const link = element("a", text);
+      link.href = safeUrl(url);
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      return link;
+    }
+
+function fold(text) {
+      return text.toLocaleLowerCase("vi")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/đ/g, "d");
+    }
+
+function visibleRecords() {
+      const query = fold($("search").value.trim());
+      const topic = $("filter").value;
+
+return records.filter(item => {
+        const matchTopic = topic === "all" || item.topic === topic
+          || (topic !== "both" && item.topic === "both");
+        const matchText = fold(
+          `${item.title} ${item.text} ${topicNames[item.topic]}`
+        ).includes(query);
+        return matchTopic && matchText;
+      });
+    }
+
+function controls(item) {
+      const group = element("div", undefined, "actions");
+
+const edit = element("button", "Sửa", "btn light small");
+      edit.type = "button";
+      edit.addEventListener("click", () => {
+        editingId = item.id;
+        for (const key of ["kind", "topic", "title", "text", "url"]) {
+          $(key).value = item[key];
+        }
+        $("url").required = item.kind === "source";
+        $("saveButton").textContent = "Lưu thay đổi";
+        $("manager").scrollIntoView({ behavior: "smooth" });
+        $("title").focus({ preventScroll: true });
+      });
+
+const remove = element("button", "Xóa", "btn danger small");
+      remove.type = "button";
+      remove.addEventListener("click", () => {
+        if (!confirm(`Xóa "${item.title}" khỏi trình duyệt này?`)) return;
+        if (commit(records.filter(record => record.id !== item.id))) {
+          if (editingId === item.id) resetEditor();
+          notify("Đã xóa nội dung.");
+        }
+      });
+
+group.append(edit, remove);
+      return group;
+    }
+
+function render() {
+      const visible = visibleRecords();
+      const lessons = visible.filter(item => item.kind === "lesson");
+      const sources = visible.filter(item => item.kind === "source");
+
+$("lessonCount").textContent =
+        `${lessons.length} / ${records.filter(x => x.kind === "lesson").length} bài`;
+      $("sourceCount").textContent =
+        `${sources.length} / ${records.filter(x => x.kind === "source").length} nguồn`;
+      $("actionHeading").hidden = !managing;
+
+$("lessonGrid").replaceChildren();
+      if (!lessons.length) {
+        $("lessonGrid").append(element("p", "Không có bài học phù hợp.", "empty"));
+      }
+
+for (const item of lessons) {
+        const card = element("article", undefined, "card");
+        card.append(
+          element("span", topicNames[item.topic], "badge"),
+          element("h3", item.title),
+          element("p", item.text)
+        );
+        if (item.url) {
+          card.append(externalLink("Tra cứu thêm ↗", item.url));
+        }
+        if (managing) card.append(controls(item));
+        $("lessonGrid").append(card);
+      }
+
+$("sourceRows").replaceChildren();
+      if (!sources.length) {
+        const row = element("tr");
+        const cell = element("td", "Không có nguồn phù hợp.");
+        cell.colSpan = managing ? 4 : 3;
+        row.append(cell);
+        $("sourceRows").append(row);
+      }
+
+for (const item of sources) {
+        const row = element("tr");
+        const name = element("td");
+        name.append(externalLink(item.title + " ↗", item.url));
+        row.append(
+          name,
+          element("td", topicNames[item.topic]),
+          element("td", item.text)
+        );
+
+if (managing) {
+          const actions = element("td");
+          actions.append(controls(item));
+          row.append(actions);
+        }
+        $("sourceRows").append(row);
+      }
+    }
+
+function resetEditor() {
+      editingId = null;
+      $("editor").reset();
+      $("url").required = false;
+      $("saveButton").textContent = "Thêm nội dung";
+    }
+
+$("manageButton").addEventListener("click", () => {
+      managing = !managing;
+      $("manager").hidden = !managing;
+      $("manageButton").setAttribute("aria-expanded", String(managing));
+      $("manageButton").textContent = managing ? "Đóng quản lý" : "Quản lý cục bộ";
+      render();
+      if (managing) $("manager").scrollIntoView({ behavior: "smooth" });
+    });
+
+$("kind").addEventListener("change", () => {
+      $("url").required = $("kind").value === "source";
+    });
+
+$("editor").addEventListener("submit", event => {
+      event.preventDefault();
+      if (!managing) return;
+
+try {
+        const record = normalize({
+          kind: $("kind").value,
+          topic: $("topic").value,
+          title: $("title").value,
+          text: $("text").value,
+          url: $("url").value
+        });
+
+if (!editingId && records.length >= 500) {
+          throw new Error("Bản cá nhân này hỗ trợ tối đa 500 nội dung.");
+        }
+
+const next = editingId
+          ? records.map(item => item.id === editingId ? record : item)
+          : [record, ...records];
+
+if (commit(next)) {
+          resetEditor();
+          notify("Đã lưu trên trình duyệt này.");
+        }
+      } catch (error) {
+        notify(error.message);
+      }
+    });
+
+$("cancelButton").addEventListener("click", resetEditor);
+    $("search").addEventListener("input", render);
+    $("filter").addEventListener("change", render);
+
+$("exportButton").addEventListener("click", () => {
+      const blob = new Blob(
+        [JSON.stringify(records, null, 2)],
+        { type: "application/json;charset=utf-8" }
+      );
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = "su-hoc-xanh-backup.json";
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+      notify("Đã tạo tệp sao lưu để tải xuống.");
+    });
+
+$("importButton").addEventListener("click", () => $("importFile").click());
+
+$("importFile").addEventListener("change", async event => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+try {
+        if (file.size > 2 * 1024 * 1024) {
+          throw new Error("Vui lòng chọn tệp JSON nhỏ hơn hoặc bằng 2 MB.");
+        }
+
+const imported = validateArray(JSON.parse(await file.text()));
+
+if (!confirm(
+          `Thay toàn bộ nội dung hiện tại bằng ${imported.length} mục trong bản sao lưu? ` +
+          "Hãy xuất bản sao lưu hiện tại trước nếu cần."
+        )) return;
+
+if (commit(imported)) {
+          resetEditor();
+          notify("Đã nhập bản sao lưu.");
+        }
+      } catch {
+        notify("Không nhập được: kiểm tra định dạng JSON, giới hạn dữ liệu và đường dẫn HTTP/HTTPS.");
+      } finally {
+        event.target.value = "";
+      }
+    });
+
+load();
+    render();
+  </script>
+
+<script>
+    // Đổi màu giao diện (xanh / đỏ / đen), nhớ lựa chọn trong trình duyệt
+    (function () {
+      const KEY = "su-hoc-xanh-theme", bars = { blue:"#123c87", red:"#7a0c1c", black:"#0c0c0d" };
+      function apply(name) {
+        document.documentElement.dataset.theme = name;
+        document.querySelector('meta[name="theme-color"]').content = bars[name];
+        document.querySelectorAll("[data-theme-btn]").forEach(b =>
+          b.setAttribute("aria-pressed", String(b.dataset.themeBtn === name)));
+      }
+      let saved = "blue";
+      try { saved = localStorage.getItem(KEY) || "blue"; } catch {}
+      apply(bars[saved] ? saved : "blue");
+      document.querySelectorAll("[data-theme-btn]").forEach(b => b.addEventListener("click", () => {
+        apply(b.dataset.themeBtn);
+        try { localStorage.setItem(KEY, b.dataset.themeBtn); } catch {}
+      }));
+    })();
+
+    // Người đã có dữ liệu cũ vẫn nhận thêm nội dung mới (chỉ thêm một lần)
+    try {
+      const SEED = "su-hoc-xanh-seed", VER = "2";
+      if (localStorage.getItem(SEED) !== VER) {
+        if (localStorage.getItem(STORAGE_KEY) !== null) {
+          const have = new Set(records.map(r => r.title));
+          const add = starterV2.filter(x => !have.has(x.title)).map(normalize);
+          if (add.length && commit([...records, ...add])) notify("Đã thêm " + add.length + " nội dung mới.");
+        }
+        localStorage.setItem(SEED, VER);
+      }
+    } catch {}
+</script>
+</body>
+</html>
